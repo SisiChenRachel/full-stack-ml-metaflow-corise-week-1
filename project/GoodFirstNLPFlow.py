@@ -10,7 +10,7 @@ from metaflow import (
 )
 from metaflow.cards import Table, Markdown, Artifact
 
-# TODO move your labeling function from earlier in the notebook here
+# move your labeling function from earlier in the notebook here
 labeling_function = lambda row: 1 if row['rating'] >= 4 else 0
 
 
@@ -92,7 +92,7 @@ class GoodFirstNLPFlow(FlowSpec):
 
     @card(
         type="corise"
-    )  # TODO: after you get the flow working, chain link on the left side nav to open your card!
+    )  # after you get the flow working, chain link on the left side nav to open your card!
     @step
     def end(self):
         import pandas as pd
@@ -119,14 +119,14 @@ class GoodFirstNLPFlow(FlowSpec):
         print("False Positives:", false_positives)
 
         current.card.append(Markdown("## Examples of False Positives"))
-        # TODO: display the false_positives dataframe using metaflow.cards
+        # display the false_positives dataframe using metaflow.cards
         # Documentation: https://docs.metaflow.org/api/cards#table
         current.card.append(
             Table.from_dataframe(
                 false_positives_df 
                 )
             )
-        # TODO: compute the false_negatives predictions where the baseline is 0 and the valdf label is 1.e
+        # compute the false_negatives predictions where the baseline is 0 and the valdf label is 1.e
         
 
         false_negatives = df_t1[(df_t1['predicted'] == 0) & (df_t1['true_label'] == 1)].sum()
@@ -135,7 +135,7 @@ class GoodFirstNLPFlow(FlowSpec):
         # Print the number of false positives
         print("False Negatives:", false_negatives)
         current.card.append(Markdown("## Examples of False Negatives"))
-        # TODO: display the false_negatives dataframe using metaflow.cards
+        # display the false_negatives dataframe using metaflow.cards
         current.card.append(
             Table.from_dataframe(
                 false_negatives_df 

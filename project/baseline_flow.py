@@ -10,7 +10,7 @@ from metaflow import (
 )
 from metaflow.cards import Table, Markdown, Artifact
 
-# TODO move your labeling function from earlier in the notebook here
+# move your labeling function from earlier in the notebook here
 labeling_function = lambda row: 1 if row['rating'] >= 4 else 0
 
 
@@ -62,16 +62,17 @@ class BaselineNLPFlow(FlowSpec):
         "Compute the baseline"
         from sklearn.metrics import accuracy_score, roc_auc_score
 
-        ### TODO: Fit and score a baseline model on the data, log the acc and rocauc as artifacts.
+        ### Fit and score a baseline model on the data, log the acc and rocauc as artifacts.
         
         self.traindf["model_1"] = 1
-        self.base_acc = accuracy_score(self.traindf["label"], self.traindf["model_1"])
-        self.base_rocauc = roc_auc_score(self.traindf["label"], self.traindf["model_1"])
+        self.valdf["model_1"] = 1
+        self.base_acc = accuracy_score(self.valdf["label"], self.valdf["model_1"])
+        self.base_rocauc = roc_auc_score(self.valdf["label"], self.valdf["model_1"])
         self.next(self.end)
 
     @card(
         type="corise"
-    )  # TODO: after you get the flow working, chain link on the left side nav to open your card!
+    )  # after you get the flow working, chain link on the left side nav to open your card!
     @step
     def end(self):
         import pandas as pd
@@ -82,10 +83,10 @@ class BaselineNLPFlow(FlowSpec):
         current.card.append(Markdown("## Overall Accuracy"))
         current.card.append(Artifact(self.base_acc))
 
-        # TODO: compute the false positive predictions where the baseline is 1 and the valdf label is 0.
+        # compute the false positive predictions where the baseline is 1 and the valdf label is 0.
 
                 # Initialize counters for false positives
-        self.valdf["model_1"] = 1
+
 
 
         data = {
@@ -101,14 +102,14 @@ class BaselineNLPFlow(FlowSpec):
         # Print the number of false positives
         print("False Positives:", false_positives)
         current.card.append(Markdown("## Examples of False Positives"))
-        # TODO: display the false_positives dataframe using metaflow.cards
+        # display the false_positives dataframe using metaflow.cards
         # Documentation: https://docs.metaflow.org/api/cards#table
         current.card.append(
             Table.from_dataframe(
                 false_positives_df 
                 )
             )
-        # TODO: compute the false_negatives predictions where the baseline is 0 and the valdf label is 1.e
+        # compute the false_negatives predictions where the baseline is 0 and the valdf label is 1.e
 
         false_negatives = df_t1[(df_t1['predicted'] == 0) & (df_t1['true_label'] == 1)].sum()
         false_negatives_df = df_t1[(df_t1['predicted'] == 0) & (df_t1['true_label'] == 1)]
@@ -116,7 +117,7 @@ class BaselineNLPFlow(FlowSpec):
         # Print the number of false positives
         print("False Negatives:", false_negatives)
         current.card.append(Markdown("## Examples of False Negatives"))
-        # TODO: display the false_negatives dataframe using metaflow.cards
+        # display the false_negatives dataframe using metaflow.cards
         current.card.append(
             Table.from_dataframe(
                 false_negatives_df 
